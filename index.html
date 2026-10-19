@@ -98,12 +98,10 @@ button:active {
     gap: 10px;
     margin-bottom: 13px;
 }
-.counter {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    transform: translateX(-5px);
+.count {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 700;
 }
 .random-title {
     margin-bottom: 10px;
@@ -171,6 +169,7 @@ button:active {
     align-items: center;
     justify-content: center;
     gap: 10px;
+    transform: translateX(-5px);
 }
 .counter button {
     min-width: 30px;
@@ -293,8 +292,8 @@ input[type="file"] {
         gap: 7px;
     }
     .counter button {
-    min-width: 30px;
-    padding: 4px 7px;
+        min-width: 30px;
+        padding: 4px 7px;
     }
 }
 </style>
@@ -366,7 +365,6 @@ input[type="file"] {
         </section>
     </main>
 </div>
-
 <script>
 const STORAGE_KEY = "lyricsTrackerInventory_v1";
 
