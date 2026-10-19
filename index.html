@@ -312,7 +312,7 @@ input[type="file"] {
             <div class="random-result" id="random-result">Choose a song to get started</div>
             <div class="random-actions">
                 <button class="primary" data-action="choose-random">Choose Random</button>
-                <button class="secondary" data-action="reset-random">Reset</button>
+                <button class="skip" data-action="skip-current">Skip</button>
             </div>
             <div class="count" id="remaining-count" style="text-align:center;margin-top:12px">
                 0 songs remaining
@@ -352,6 +352,9 @@ input[type="file"] {
             </div>
             <div id="history-list" class="history-list">
                 <div class="empty-state">No songs chosen yet.</div>
+            </div>
+            <div style="display:flex;justify-content:center;margin-top:16px">
+                <button class="secondary" data-action="reset-history">Reset</button>
             </div>
         </section>
     </main>
@@ -716,7 +719,11 @@ document.addEventListener("click", event => {
             chooseRandomSong();
             break;
 
-        case "reset-random":
+        case "skip-current":
+            skipSong(currentRandomId);
+            break;
+
+        case "reset-history":
             resetRandom();
             break;
 
