@@ -8,7 +8,6 @@
 :root {
     --bg: #f5f2ec;
     --surface: #fffdf9;
-    --surface-alt: #f0ece5;
     --text: #343640;
     --muted: #777782;
     --border: #ded8cf;
@@ -16,12 +15,13 @@
     --blue: #617fa4;
     --terracotta: #bf7965;
     --green: #668b73;
-    --shadow: 0 3px 12px rgba(50, 43, 35, .06);
 }
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 body {
     margin: 0;
-    padding: 20px 14px 40px;
+    padding: 20px 14px 36px;
     background: var(--bg);
     color: var(--text);
     font-family: Arial, Helvetica, sans-serif;
@@ -35,20 +35,20 @@ body {
 h1 {
     margin: 5px 0 20px;
     text-align: center;
-    font-size: 32px;
-    letter-spacing: -.7px;
+    font-size: 30px;
+    line-height: 1.25;
 }
 h2 {
     margin: 0;
     font-size: 21px;
 }
 .panel {
-    margin-bottom: 17px;
-    padding: 18px;
+    margin-bottom: 16px;
+    padding: 17px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 16px;
-    box-shadow: var(--shadow);
+    box-shadow: 0 3px 12px rgba(50,43,35,.05);
 }
 .tabs {
     display: flex;
@@ -62,32 +62,41 @@ button, .file-label {
     border-radius: 10px;
     background: var(--blue);
     color: white;
+    font-family: inherit;
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    font-family: inherit;
 }
-button:hover, .file-label:hover { filter: brightness(.94); }
-button:active { transform: translateY(1px); }
+button:hover, .file-label:hover {
+    filter: brightness(.94);
+}
+button:active {
+    transform: translateY(1px);
+}
 .tab {
     flex: 1;
     background: #e7e1d8;
     color: var(--text);
 }
-.tab.active {
+.tab.active, .primary {
     background: var(--purple);
     color: white;
 }
-.primary { background: var(--purple); }
-.secondary { background: #817d78; }
-.skip { background: var(--terracotta); }
-.success { background: var(--green); }
+.secondary {
+    background: #817d78;
+}
+.skip {
+    background: var(--terracotta);
+}
+.success {
+    background: var(--green);
+}
 .section-heading {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 14px;
+    gap: 10px;
+    margin-bottom: 13px;
 }
 .count {
     color: var(--muted);
@@ -95,77 +104,71 @@ button:active { transform: translateY(1px); }
     font-weight: 700;
 }
 .random-title {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     color: var(--muted);
     font-size: 14px;
     font-weight: 700;
-    letter-spacing: .7px;
+    letter-spacing: .6px;
     text-transform: uppercase;
 }
 .random-result {
-    min-height: 90px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 18px 8px;
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 76px;
+    padding: 15px 4px;
     text-align: center;
+    font-size: 21px;
+    font-weight: 750;
+    line-height: 1.4;
     overflow-wrap: anywhere;
-    font-size: 29px;
-    line-height: 1.35;
-    font-weight: 800;
+    word-break: normal;
 }
 .random-actions {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 9px;
-    margin-top: 10px;
+    margin-top: 8px;
 }
-.song-list {
+.song-list, .history-list {
     display: flex;
     flex-direction: column;
     gap: 9px;
 }
 .song-item {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 12px;
-    padding: 15px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    min-width: 0;
+    padding: 13px 14px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
 }
 .song-name {
+    width: 100%;
     min-width: 0;
-    font-size: 23px;
+    font-size: 19px;
+    font-weight: 700;
     line-height: 1.4;
-    font-weight: 750;
     overflow-wrap: anywhere;
+    word-break: normal;
 }
 .song-actions {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
+    justify-content: flex-end;
     gap: 8px;
+    width: 100%;
+    min-width: 0;
 }
-.lyrics-button {
-    min-height: 36px;
-    padding: 8px 13px;
-    font-size: 14px;
-    white-space: nowrap;
-    background: var(--blue);
-}
-.artist-bad-bunny { color: #bd4b4b; }
-.artist-j-balvin { color: #56825d; }
-.artist-ozuna { color: #777782; }
-.artist-farruko { color: #5489b4; }
-.artist-arcangel { color: #b38a36; }
 .counter {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
 }
 .counter button {
     min-width: 40px;
@@ -174,31 +177,40 @@ button:active { transform: translateY(1px); }
     font-size: 18px;
 }
 .counter-value {
-    min-width: 26px;
+    min-width: 22px;
     text-align: center;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 800;
 }
-.history-list {
+.lyrics-button {
+    min-height: 36px;
+    padding: 8px 13px;
+    font-size: 14px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    background: var(--blue);
+}
+.artist-bad-bunny { color: #bd4b4b; }
+.artist-j-balvin { color: #56825d; }
+.artist-ozuna { color: #777782; }
+.artist-farruko { color: #5489b4; }
+.artist-arcangel { color: #b38a36; }
+.history-item {
     display: flex;
     flex-direction: column;
+    align-items: stretch;
     gap: 10px;
-}
-.history-item {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 12px;
-    padding: 14px;
+    min-width: 0;
+    padding: 13px 14px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
 }
 .history-name {
     min-width: 0;
-    font-size: 21px;
+    font-size: 18px;
+    font-weight: 700;
     line-height: 1.4;
-    font-weight: 750;
     overflow-wrap: anywhere;
 }
 .history-actions {
@@ -206,59 +218,82 @@ button:active { transform: translateY(1px); }
     align-items: center;
     justify-content: flex-end;
     gap: 8px;
+    width: 100%;
 }
 .empty-state {
-    padding: 28px 12px;
+    padding: 24px 10px;
     text-align: center;
     color: var(--muted);
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.6;
 }
 .upload-area {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    align-items: flex-start;
+    gap: 11px;
 }
 .upload-description {
     margin: 0;
     color: var(--muted);
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.6;
 }
 .file-label {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    align-self: flex-start;
     background: var(--green);
 }
-input[type="file"] { display: none; }
+input[type="file"] {
+    display: none;
+}
 .status {
     min-height: 20px;
     color: var(--muted);
     font-size: 14px;
     line-height: 1.5;
 }
-.hidden { display: none !important; }
-@media (max-width: 520px) {
-    body { padding: 14px 9px 28px; }
-    h1 { font-size: 29px; }
-    .panel { padding: 14px; }
+.hidden {
+    display: none !important;
+}
+@media (min-width: 600px) {
     .song-item, .history-item {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 10px;
-        padding: 13px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 12px;
     }
-    .song-name {
-        font-size: 25px;
-        line-height: 1.4;
+    .song-name, .history-name {
+        font-size: 20px;
     }
     .song-actions, .history-actions {
-        width: 100%;
-        justify-content: flex-end;
+        width: auto;
     }
-    .lyrics-button { flex-shrink: 0; }
-    .random-result { font-size: 27px; }
+}
+@media (max-width: 380px) {
+    body {
+        padding: 14px 9px 28px;
+    }
+    .panel {
+        padding: 13px;
+    }
+    h1 {
+        font-size: 27px;
+    }
+    .random-result {
+        font-size: 19px;
+    }
+    .song-name {
+        font-size: 18px;
+    }
+    .counter {
+        gap: 7px;
+    }
+    .counter button {
+        min-width: 36px;
+        padding: 7px 10px;
+    }
 }
 </style>
 </head>
@@ -279,7 +314,7 @@ input[type="file"] { display: none; }
                 <button class="primary" data-action="choose-random">Choose Random</button>
                 <button class="secondary" data-action="reset-random">Reset</button>
             </div>
-            <div class="count" id="remaining-count" style="text-align:center;margin-top:13px">
+            <div class="count" id="remaining-count" style="text-align:center;margin-top:12px">
                 0 songs remaining
             </div>
         </section>
@@ -358,6 +393,7 @@ function loadState() {
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return;
+
         const data = JSON.parse(raw);
         songs = Array.isArray(data.songs) ? data.songs : [];
         history = Array.isArray(data.history) ? data.history : [];
@@ -418,7 +454,9 @@ function cleanTitle(value) {
 }
 
 function displayTitle(value) {
-    const title = escapeHTML(cleanTitle(value) || value);
+    const cleaned = cleanTitle(value) || value;
+    let title = escapeHTML(cleaned);
+
     const artistRules = [
         [/\bBad Bunny\b/i, "artist-bad-bunny"],
         [/\bJ Balvin\b/i, "artist-j-balvin"],
@@ -428,11 +466,12 @@ function displayTitle(value) {
     ];
 
     for (const [pattern, className] of artistRules) {
-        const match = cleanTitle(value).match(pattern);
+        const match = cleaned.match(pattern);
         if (match) {
             const safeArtist = escapeHTML(match[0]);
-            return title.replace(
-                new RegExp(safeArtist.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"),
+            const escapedPattern = safeArtist.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            title = title.replace(
+                new RegExp(escapedPattern, "i"),
                 `<span class="${className}">${safeArtist}</span>`
             );
         }
@@ -535,6 +574,7 @@ function updateTabs() {
             (currentPage === "history" && !isSongs)
         );
     });
+
     elements.songsPage.classList.toggle("hidden", currentPage !== "songs");
     elements.historyPage.classList.toggle("hidden", currentPage !== "history");
 }
@@ -626,6 +666,7 @@ function importTextFile(file) {
         for (const line of lines) {
             const key = cleanTitle(line).toLowerCase();
             if (!key || seen.has(key)) continue;
+
             seen.add(key);
             uniqueTitles.push(line);
         }
