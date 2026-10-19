@@ -6,15 +6,15 @@
 <title>Lyrics Tracker</title>
 <style>
 :root {
-    --bg: #f5f2ec;
-    --surface: #fffdf9;
-    --text: #343640;
-    --muted: #777782;
-    --border: #ded8cf;
-    --purple: #7566a8;
-    --blue: #617fa4;
-    --terracotta: #bf7965;
-    --green: #668b73;
+    --bg: #f4f1eb;
+    --surface: #ffffff;
+    --text: #2f3038;
+    --muted: #6e6f78;
+    --border: #e2dcd3;
+    --purple: #6f5f9e;
+    --blue: #5a7599;
+    --terracotta: #b56e5c;
+    --green: #5d8470;
 }
 * {
     box-sizing: border-box;
@@ -48,7 +48,7 @@ h2 {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 16px;
-    box-shadow: 0 3px 12px rgba(50,43,35,.05);
+    box-shadow: 0 2px 10px rgba(45, 40, 35, 0.04);
 }
 .tabs {
     display: flex;
@@ -75,7 +75,7 @@ button:active {
 }
 .tab {
     flex: 1;
-    background: #e7e1d8;
+    background: #e8e3db;
     color: var(--text);
 }
 .tab.active, .primary {
@@ -83,7 +83,7 @@ button:active {
     color: white;
 }
 .secondary {
-    background: #817d78;
+    background: #7a7671;
 }
 .skip {
     background: var(--terracotta);
@@ -159,7 +159,7 @@ button:active {
 .song-actions {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 8px;
     width: 100%;
     min-width: 0;
