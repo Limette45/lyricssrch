@@ -353,9 +353,6 @@ input[type="file"] {
             <div id="history-list" class="history-list">
                 <div class="empty-state">No songs chosen yet.</div>
             </div>
-            <div style="display:flex;justify-content:center;margin-top:16px">
-                <button class="secondary" data-action="reset-history">Reset</button>
-            </div>
         </section>
     </main>
 </div>
@@ -519,6 +516,7 @@ function renderSongs() {
 
     renderRemainingCount();
 }
+
 function renderRemainingCount() {
     elements.remainingCount.textContent =
         `${getRemainingSongs().length} songs remaining`;
@@ -605,13 +603,6 @@ function chooseRandomSong() {
         chosenAt: Date.now()
     });
 
-    renderAll();
-    saveState();
-}
-
-function resetRandom() {
-    history = [];
-    currentRandomId = null;
     renderAll();
     saveState();
 }
@@ -721,10 +712,6 @@ document.addEventListener("click", event => {
 
         case "skip-current":
             skipSong(currentRandomId);
-            break;
-
-        case "reset-history":
-            resetRandom();
             break;
 
         case "increment":
