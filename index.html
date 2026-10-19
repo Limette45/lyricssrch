@@ -494,6 +494,18 @@ function getRemainingSongs() {
     return songs.filter(song => !usedIds.has(song.id));
 }
 
+function getLowestCheckedCandidates(available) {
+    if (available.length === 0) return [];
+
+    let minChecked = Infinity;
+    for (const song of available) {
+        const count = Number(song.checked) || 0;
+        if (count < minChecked) minChecked = count;
+    }
+
+    return available.filter(song => (Number(song.checked) || 0) === minChecked);
+}
+
 function renderSongActions(song) {
     return `
         <div class="song-actions">
@@ -612,8 +624,10 @@ function chooseRandomSong() {
         return;
     }
 
-    const index = Math.floor(Math.random() * available.length);
-    const song = available[index];
+    // Prefer songs with the lowest checked count
+    const candidates = getLowestCheckedCandidates(available);
+    const index = Math.floor(Math.random() * candidates.length);
+    const song = candidates[index];
 
     currentRandomId = song.id;
     history.push({
