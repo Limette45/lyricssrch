@@ -2,20 +2,27 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lyrics Tracker</title>
+
 <style>
 :root {
-    --bg: #f2f7fa;
-    --surface: #ffffff;
-    --surface-alt: #eaf4f9;
-    --text: #263746;
-    --muted: #718391;
-    --border: #d8e7ef;
-    --blue: #8dcfe8;
-    --blue-dark: #347d9d;
-    --blue-hover: #d9eff9;
-    --danger: #d87979;
+    --background: #f5f2ec;
+    --surface: #fffdf9;
+    --surface-alt: #eee9e1;
+    --text: #343640;
+    --muted: #777781;
+    --border: #e3ddd3;
+    --purple: #7566a8;
+    --purple-hover: #65568f;
+    --blue: #617fa4;
+    --blue-hover: #506b8c;
+    --terracotta: #bf7965;
+    --terracotta-hover: #a86553;
+    --green: #78957c;
+    --green-hover: #66836a;
+    --button-text: #ffffff;
+    --shadow: 0 5px 18px rgba(53, 47, 41, 0.055);
 }
 
 * {
@@ -23,755 +30,1065 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    max-width: 850px;
-    margin: 0 auto;
-    padding: 22px;
-    color: var(--text);
-    background: var(--bg);
-    line-height: 1.5;
-}
-
-h1 {
-    font-size: 27px;
     margin: 0;
-}
-
-h2 {
-    font-size: 19px;
-    margin: 0 0 14px;
-}
-
-p {
-    margin-top: 8px;
-}
-
-button, input {
-    font: inherit;
-}
-
-button {
-    cursor: pointer;
-    padding: 8px 13px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
+    padding: 28px 16px 40px;
+    background: var(--background);
     color: var(--text);
-    background: var(--surface);
-    transition: background 0.15s, border-color 0.15s;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.55;
 }
 
-button:hover:not(:disabled) {
-    background: var(--blue-hover);
-    border-color: var(--blue);
+.app {
+    width: 100%;
+    max-width: 820px;
+    margin: 0 auto;
 }
 
-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.45;
-}
-
-.primary-button {
-    background: #bce6f6;
-    border-color: #a3d9ee;
-    color: #244b60;
-    font-weight: 600;
-}
-
-.primary-button:hover:not(:disabled) {
-    background: #a6ddf1;
-}
-
-.page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
+header {
     margin-bottom: 24px;
 }
 
-.header-actions {
-    display: flex;
-    gap: 8px;
+h1 {
+    margin: 0 0 5px;
+    font-size: 30px;
+    font-weight: 750;
+    letter-spacing: -0.8px;
 }
 
-section {
-    margin-bottom: 28px;
-}
-
-#random-section {
-    padding: 18px;
-    background: #e5f3fa;
-    border: 1px solid #cce5f1;
-    border-radius: 12px;
-}
-
-#random-section h2 {
-    margin-bottom: 8px;
-}
-
-.remaining {
-    margin: 0 0 14px;
+.subtitle {
+    margin: 0;
     color: var(--muted);
     font-size: 14px;
 }
 
-#random-button {
-    width: 100%;
-    padding: 12px;
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.15s;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button:focus-visible,
+input:focus-visible {
+    outline: 3px solid rgba(117, 102, 168, 0.3);
+    outline-offset: 2px;
+}
+
+.primary-button {
+    color: var(--button-text);
+    background: var(--purple);
+}
+
+.primary-button:hover {
+    background: var(--purple-hover);
+}
+
+.blue-button {
+    color: var(--button-text);
+    background: var(--blue);
+}
+
+.blue-button:hover {
+    background: var(--blue-hover);
+}
+
+.terracotta-button {
+    color: var(--button-text);
+    background: var(--terracotta);
+}
+
+.terracotta-button:hover {
+    background: var(--terracotta-hover);
+}
+
+.green-button {
+    color: var(--button-text);
+    background: var(--green);
+}
+
+.green-button:hover {
+    background: var(--green-hover);
+}
+
+.neutral-button {
+    color: var(--text);
+    background: var(--surface-alt);
+}
+
+.neutral-button:hover {
+    background: #e3ddd3;
+}
+
+.small-button {
+    min-width: 36px;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+.panel {
+    margin-bottom: 20px;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+}
+
+.panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+h2 {
+    margin: 0;
+    font-size: 19px;
+    letter-spacing: -0.2px;
+}
+
+h3 {
+    margin: 0;
     font-size: 16px;
 }
 
-#random-result {
-    margin-top: 14px;
+.random-panel {
+    padding: 22px;
+    border-top: 4px solid var(--purple);
 }
 
-#random-result:empty {
-    display: none;
-}
-
-.random-card {
-    background: var(--surface);
-    border: 1px solid #c9e2ef;
-    border-radius: 10px;
-    padding: 15px;
-}
-
-.random-card .song-title {
-    font-size: 18px;
-}
-
-.random-actions {
+.random-top {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 17px;
+}
+
+.remaining {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.random-title {
+    margin: 0 0 18px;
+    font-size: 23px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.random-placeholder {
+    color: var(--muted);
+    font-size: 15px;
+    margin: 0 0 18px;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     gap: 8px;
-    margin-top: 14px;
-}
-
-.random-actions button {
-    flex: 1;
-}
-
-.skip-button {
-    color: #8d5353;
-    border-color: #ebd1d1;
 }
 
 .song-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 9px;
 }
 
-.song {
-    padding: 14px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-}
-
-.song-title {
-    font-weight: 600;
-    overflow-wrap: anywhere;
-    margin-bottom: 11px;
-}
-
-.song-controls {
+.song-item {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
 }
 
-.checked-label {
+.song-name {
+    min-width: 0;
+    flex: 1;
+    overflow-wrap: anywhere;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.song-actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 7px;
+}
+
+.counter {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 3px;
+    background: var(--surface-alt);
+    border-radius: 9px;
+}
+
+.counter-value {
+    min-width: 20px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.counter button {
+    color: var(--text);
+    background: transparent;
+}
+
+.counter button:hover {
+    background: #ded7cc;
+}
+
+.section-note {
+    margin: -7px 0 15px;
     color: var(--muted);
     font-size: 13px;
 }
 
-.count {
-    min-width: 24px;
+.empty-state {
+    padding: 25px 15px;
+    color: var(--muted);
     text-align: center;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-}
-
-.lyrics-button {
-    margin-left: auto;
-    background: #e0f2fa;
-    border-color: #c6e7f5;
-    color: #286b89;
-}
-
-.lyrics-button:hover:not(:disabled) {
-    background: #ccebf8;
-}
-
-/* Artist colors */
-.artist-bad-bunny {
-    color: #d84444;
-}
-
-.artist-j-balvin {
-    color: #29945b;
-}
-
-.artist-ozuna {
-    color: #858b94;
-}
-
-.artist-farruko {
-    color: #28a5d2;
-}
-
-.artist-arcangel {
-    color: #c49a13;
-}
-
-#upload-section {
-    margin-top: 55px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
-}
-
-#file-input {
-    display: block;
-    width: 100%;
-    margin: 14px 0;
-    padding: 12px;
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-}
-
-#file-status, .subtext {
-    color: var(--muted);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
     font-size: 14px;
-    overflow-wrap: anywhere;
 }
 
-.empty-message {
-    color: var(--muted);
-    padding: 16px 0;
-}
-
-.history-list {
+.page-nav {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.page-nav button {
+    flex: 1;
+}
+
+.page-nav button.active {
+    color: white;
+    background: var(--text);
 }
 
 .history-item {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 12px;
-    padding: 14px;
+    padding: 13px 14px;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
 }
 
 .history-number {
-    color: var(--blue-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    color: var(--purple);
+    background: #eee9f7;
+    border-radius: 9px;
+    font-size: 13px;
     font-weight: 700;
-    min-width: 25px;
 }
 
 .history-title {
+    min-width: 0;
     flex: 1;
     overflow-wrap: anywhere;
+    font-size: 14px;
     font-weight: 600;
 }
 
-.history-date {
-    display: block;
-    margin-top: 4px;
+.history-time {
     color: var(--muted);
-    font-size: 12px;
-    font-weight: 400;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.upload-panel {
+    margin-top: 30px;
+    background: #efebe4;
+    box-shadow: none;
+}
+
+.upload-panel p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.file-input {
+    display: block;
+    width: 100%;
+    margin: 14px 0;
+    padding: 12px;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+}
+
+.file-status {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 13px;
+    overflow-wrap: anywhere;
 }
 
 .hidden {
     display: none !important;
 }
 
-@media (max-width: 480px) {
+.artist-bad-bunny {
+    color: #c74e54;
+}
+
+.artist-j-balvin {
+    color: #548565;
+}
+
+.artist-ozuna {
+    color: #85858c;
+}
+
+.artist-farruko {
+    color: #5599b9;
+}
+
+.artist-arcangel {
+    color: #b18b35;
+}
+
+@media (max-width: 520px) {
     body {
-        padding: 14px;
+        padding: 20px 12px 30px;
     }
 
-    .page-header {
+    h1 {
+        font-size: 26px;
+    }
+
+    .panel {
+        padding: 15px;
+    }
+
+    .random-panel {
+        padding: 17px;
+    }
+
+    .random-title {
+        font-size: 20px;
+    }
+
+    .song-item {
         align-items: flex-start;
+        flex-direction: column;
     }
 
-    .song {
-        padding: 12px;
+    .song-actions {
+        width: 100%;
+        justify-content: flex-start;
     }
 
-    .random-card .song-title {
-        font-size: 16px;
+    .history-time {
+        display: none;
+    }
+
+    .page-nav button {
+        padding: 10px 8px;
     }
 }
 </style>
 </head>
+
 <body>
+<div class="app">
 
-<div class="page-header">
-    <h1 id="page-title">Lyrics Tracker</h1>
-    <div class="header-actions">
-        <button id="tracker-nav" class="hidden">Tracker</button>
-        <button id="history-nav">History</button>
-    </div>
-</div>
+    <header>
+        <h1>Lyrics Tracker</h1>
+        <p class="subtitle">Choose a song, find the lyrics, and track your progress.</p>
+    </header>
 
-<main id="tracker-page">
+    <nav class="page-nav">
+        <button type="button" class="active" data-action="show-songs">Songs</button>
+        <button type="button" class="neutral-button" data-action="show-history">History</button>
+    </nav>
 
-    <section id="random-section">
-        <h2>Random Choose</h2>
-        <p id="remaining" class="remaining">0 remaining</p>
-        <button id="random-button" class="primary-button" disabled>
-            Choose Random Song
+    <main id="songsPage">
+
+        <section class="panel random-panel">
+            <div class="random-top">
+                <h2>Random Choose</h2>
+                <span id="remainingCount" class="remaining">0 remaining</span>
+            </div>
+
+            <button type="button" class="primary-button" data-action="choose-random">
+                Choose Random
+            </button>
+
+            <div id="randomResult" style="margin-top: 20px;">
+                <p class="random-placeholder">
+                    Load a TXT file to start choosing songs.
+                </p>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-heading">
+                <h2>Song List</h2>
+                <span id="songCount" class="remaining">0 songs</span>
+            </div>
+
+            <p class="section-note">
+                Checked starts at 1. Use + or − to update the count.
+            </p>
+
+            <div id="songList" class="song-list">
+                <div class="empty-state">No songs loaded yet.</div>
+            </div>
+        </section>
+
+    </main>
+
+    <main id="historyPage" class="hidden">
+        <section class="panel">
+            <div class="panel-heading">
+                <h2>Selection History</h2>
+                <span id="historyCount" class="remaining">0 songs</span>
+            </div>
+
+            <p class="section-note">
+                Skipped songs are not included in history.
+            </p>
+
+            <div id="historyList" class="song-list">
+                <div class="empty-state">No selections yet.</div>
+            </div>
+        </section>
+    </main>
+
+    <section class="panel upload-panel">
+        <h2>Load Song List</h2>
+        <p>
+            Select a TXT file with one song title per line.
+            Loading a new file resets Checked counts, random selections, and history.
+        </p>
+
+        <input
+            id="fileInput"
+            class="file-input"
+            type="file"
+            accept=".txt,text/plain"
+        >
+
+        <button type="button" class="blue-button" data-action="load-file">
+            Load TXT File
         </button>
-        <div id="random-result"></div>
-    </section>
 
-    <section>
-        <h2>Song List</h2>
-        <div id="song-list" class="song-list">
-            <p class="empty-message">Load a TXT file to get started.</p>
+        <div id="fileStatus" class="file-status" aria-live="polite">
+            No file selected.
         </div>
     </section>
 
-    <section id="upload-section">
-        <h2>Load TXT File</h2>
-        <p class="subtext">Select a text file containing one song per line.</p>
-        <input type="file" id="file-input" accept=".txt,text/plain">
-        <p id="file-status">No file loaded.</p>
-    </section>
-
-</main>
-
-<main id="history-page" class="hidden">
-    <section>
-        <h2>Random Selection History</h2>
-        <p class="subtext">
-            Songs are recorded when selected. Skipped songs are not included.
-        </p>
-        <div id="history-list" class="history-list"></div>
-    </section>
-</main>
+</div>
 
 <script>
-const STORAGE_KEY = "lyricsTrackerInventory_v1";
+(() => {
+    "use strict";
 
-let songs = [];
-let selectedSongIds = new Set();
-let randomSongId = null;
-let history = [];
-let nextSongId = 1;
+    const STORAGE_KEY = "lyricsTrackerInventory_v1";
 
-const songList = document.getElementById("song-list");
-const remainingDisplay = document.getElementById("remaining");
-const randomButton = document.getElementById("random-button");
-const randomResult = document.getElementById("random-result");
-const fileInput = document.getElementById("file-input");
-const fileStatus = document.getElementById("file-status");
-const historyList = document.getElementById("history-list");
+    const elements = {
+        songsPage: document.getElementById("songsPage"),
+        historyPage: document.getElementById("historyPage"),
+        songList: document.getElementById("songList"),
+        songCount: document.getElementById("songCount"),
+        remainingCount: document.getElementById("remainingCount"),
+        randomResult: document.getElementById("randomResult"),
+        historyList: document.getElementById("historyList"),
+        historyCount: document.getElementById("historyCount"),
+        fileInput: document.getElementById("fileInput"),
+        fileStatus: document.getElementById("fileStatus")
+    };
 
-const trackerPage = document.getElementById("tracker-page");
-const historyPage = document.getElementById("history-page");
-const pageTitle = document.getElementById("page-title");
-const trackerNav = document.getElementById("tracker-nav");
-const historyNav = document.getElementById("history-nav");
+    let songs = [];
+    let selectedSongIds = [];
+    let randomPickId = null;
+    let history = [];
+    let nextSongId = 1;
+    let nextPickId = 1;
+    let currentPage = "songs";
 
-function cleanDisplayTitle(title) {
-    return title
-        // Remove bracketed content, including the brackets.
-        .replace(/\([^()]*\)|\[[^\[\]]*\]|\{[^{}]*\}|（[^（）]*）|［[^［］]*］|｛[^｛｝]*｝/g, " ")
-        // Remove official video/audio labels, ignoring letter case.
-        .replace(/\bofficial\s+music\s+video\b/gi, "")
-        .replace(/\bofficial\s+video\b/gi, "")
-        .replace(/\bvideo\s+oficial\b/gi, "")
-        .replace(/\baudio\s+oficial\b/gi, "")
-        // Remove repeated spaces left behind.
-        .replace(/\s+/g, " ")
-        .trim();
-}
-
-function saveSongs() {
-    try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
-            songs,
-            selectedSongIds: [...selectedSongIds],
-            randomSongId,
-            history,
-            nextSongId
-        }));
-    } catch (error) {
-        fileStatus.textContent =
-            "Unable to save data. Browser storage may be full or unavailable.";
+    function saveState() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                songs,
+                selectedSongIds,
+                randomPickId,
+                history,
+                nextSongId,
+                nextPickId
+            }));
+        } catch (error) {
+            elements.fileStatus.textContent =
+                "Unable to save data in this browser.";
+        }
     }
-}
 
-function loadSavedData() {
-    try {
-        const saved = localStorage.getItem(STORAGE_KEY);
+    function loadState() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
 
-        if (!saved) {
-            render();
-            renderHistory();
+            if (!saved) return;
+
+            const data = JSON.parse(saved);
+
+            if (!data || !Array.isArray(data.songs)) return;
+
+            songs = data.songs.filter(song =>
+                song &&
+                typeof song.id === "number" &&
+                typeof song.title === "string"
+            ).map(song => ({
+                id: song.id,
+                title: song.title,
+                checked: Math.max(1, Number(song.checked) || 1)
+            }));
+
+            const validIds = new Set(songs.map(song => song.id));
+
+            selectedSongIds = Array.isArray(data.selectedSongIds)
+                ? [...new Set(data.selectedSongIds.filter(id => validIds.has(id)))]
+                : [];
+
+            history = Array.isArray(data.history)
+                ? data.history.filter(item =>
+                    item &&
+                    typeof item.pickId === "number" &&
+                    typeof item.title === "string"
+                )
+                : [];
+
+            randomPickId = typeof data.randomPickId === "number"
+                ? data.randomPickId
+                : null;
+
+            if (randomPickId !== null &&
+                !history.some(item => item.pickId === randomPickId)) {
+                randomPickId = null;
+            }
+
+            nextSongId = Math.max(
+                Number(data.nextSongId) || 1,
+                ...songs.map(song => song.id + 1),
+                1
+            );
+
+            nextPickId = Math.max(
+                Number(data.nextPickId) || 1,
+                ...history.map(item => item.pickId + 1),
+                1
+            );
+        } catch (error) {
+            songs = [];
+            selectedSongIds = [];
+            randomPickId = null;
+            history = [];
+            nextSongId = 1;
+            nextPickId = 1;
+        }
+    }
+
+    function escapeHTML(value) {
+        return String(value).replace(/[&<>"']/g, char => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[char]);
+    }
+
+    function removeBracketedText(value) {
+        const pairs = {
+            "(": ")",
+            "[": "]",
+            "{": "}",
+            "（": "）",
+            "［": "］",
+            "｛": "｝"
+        };
+
+        const closing = new Set(Object.values(pairs));
+        const stack = [];
+        let result = "";
+
+        for (const char of value) {
+            if (pairs[char]) {
+                stack.push(pairs[char]);
+                continue;
+            }
+
+            if (closing.has(char)) {
+                if (stack.length && stack[stack.length - 1] === char) {
+                    stack.pop();
+                }
+                continue;
+            }
+
+            if (stack.length === 0) {
+                result += char;
+            }
+        }
+
+        return result;
+    }
+
+    function cleanDisplayTitle(title) {
+        let result = removeBracketedText(title);
+
+        result = result
+            .replace(/\bofficial\s+music\s+video\b/gi, "")
+            .replace(/\bofficial\s+video\b/gi, "")
+            .replace(/\bvideo\s+oficial\b/gi, "")
+            .replace(/\baudio\s+oficial\b/gi, "")
+            .replace(/\s+/g, " ")
+            .replace(/\s+([,.;!?])/g, "$1")
+            .trim();
+
+        return result || title.trim();
+    }
+
+    function colorArtistNames(title) {
+        let result = escapeHTML(title);
+
+        const artists = [
+            {
+                names: ["Bad Bunny"],
+                className: "artist-bad-bunny"
+            },
+            {
+                names: ["J Balvin"],
+                className: "artist-j-balvin"
+            },
+            {
+                names: ["Ozuna"],
+                className: "artist-ozuna"
+            },
+            {
+                names: ["Farruko"],
+                className: "artist-farruko"
+            },
+            {
+                names: ["Arcángel", "Arcangel"],
+                className: "artist-arcangel"
+            }
+        ];
+
+        for (const artist of artists) {
+            for (const name of artist.names) {
+                const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+                const regex = new RegExp(escapedName, "gi");
+
+                result = result.replace(regex, match =>
+                    `<span class="${artist.className}">${match}</span>`
+                );
+            }
+        }
+
+        return result;
+    }
+
+    function displayTitle(title) {
+        return colorArtistNames(cleanDisplayTitle(title));
+    }
+
+    function getSong(songId) {
+        return songs.find(song => song.id === songId);
+    }
+
+    function getCurrentPick() {
+        if (randomPickId === null) return null;
+
+        return history.find(item => item.pickId === randomPickId) || null;
+    }
+
+    function getRemainingSongs() {
+        const selected = new Set(selectedSongIds);
+        return songs.filter(song => !selected.has(song.id));
+    }
+
+    function renderCounter(song) {
+        return `
+            <div class="counter">
+                <button
+                    type="button"
+                    class="small-button"
+                    data-action="decrease"
+                    data-id="${song.id}"
+                    aria-label="Decrease Checked count"
+                    ${song.checked <= 1 ? "disabled" : ""}
+                >−</button>
+                <span class="counter-value">${song.checked}</span>
+                <button
+                    type="button"
+                    class="small-button"
+                    data-action="increase"
+                    data-id="${song.id}"
+                    aria-label="Increase Checked count"
+                >+</button>
+            </div>
+        `;
+    }
+
+    function renderSongActions(song) {
+        return `
+            <div class="song-actions">
+                ${renderCounter(song)}
+                <button
+                    type="button"
+                    class="blue-button small-button"
+                    data-action="lyrics"
+                    data-id="${song.id}"
+                >Lyrics</button>
+            </div>
+        `;
+    }
+
+    function renderSongs() {
+        elements.songCount.textContent = `${songs.length} songs`;
+
+        if (songs.length === 0) {
+            elements.songList.innerHTML =
+                '<div class="empty-state">No songs loaded yet.</div>';
             return;
         }
 
-        const data = JSON.parse(saved);
+        elements.songList.innerHTML = songs.map(song => `
+            <div class="song-item">
+                <div class="song-name">${displayTitle(song.title)}</div>
+                ${renderSongActions(song)}
+            </div>
+        `).join("");
+    }
 
-        songs = Array.isArray(data.songs) ? data.songs : [];
-        selectedSongIds = new Set(data.selectedSongIds || []);
-        randomSongId = data.randomSongId ?? null;
-        history = Array.isArray(data.history) ? data.history : [];
-        nextSongId = data.nextSongId || 1;
+     function renderRandomResult() {
+        const pick = getCurrentPick();
 
-        render();
-        renderHistory();
+        if (!pick) {
+            const remaining = getRemainingSongs();
 
-        if (songs.length > 0) {
-            fileStatus.textContent =
-                "Restored " + songs.length + " saved songs.";
+            if (songs.length === 0) {
+                elements.randomResult.innerHTML = `
+                    <p class="random-placeholder">
+                        Load a TXT file to start choosing songs.
+                    </p>
+                `;
+            } else if (remaining.length === 0) {
+                elements.randomResult.innerHTML = `
+                    <p class="random-placeholder">
+                        All songs have been selected. Load a new TXT file
+                        to start a new round.
+                    </p>
+                `;
+            } else {
+                elements.randomResult.innerHTML = `
+                    <p class="random-placeholder">
+                        Press Choose Random to pick a song.
+                    </p>
+                `;
+            }
+
+            return;
         }
-    } catch (error) {
-        songs = [];
-        selectedSongIds = new Set();
-        randomSongId = null;
-        history = [];
-        nextSongId = 1;
-        render();
+
+        const song = getSong(pick.songId);
+
+        if (!song) {
+            elements.randomResult.innerHTML = `
+                <p class="random-placeholder">Choose another song.</p>
+            `;
+            return;
+        }
+
+        elements.randomResult.innerHTML = `
+            <h3 class="random-title">${displayTitle(song.title)}</h3>
+            <div class="actions">
+                ${renderCounter(song)}
+                <button
+                    type="button"
+                    class="blue-button"
+                    data-action="lyrics"
+                    data-id="${song.id}"
+                >Lyrics</button>
+                <button
+                    type="button"
+                    class="terracotta-button"
+                    data-action="skip"
+                    data-pick-id="${pick.pickId}"
+                >Skip</button>
+                <button
+                    type="button"
+                    class="neutral-button"
+                    data-action="choose-random"
+                >Choose Next</button>
+            </div>
+        `;
+    }
+
+    function renderHistory() {
+        elements.historyCount.textContent = `${history.length} selections`;
+
+        if (history.length === 0) {
+            elements.historyList.innerHTML =
+                '<div class="empty-state">No selections yet.</div>';
+            return;
+        }
+
+        elements.historyList.innerHTML = [...history].reverse().map((item, index) => {
+            const time = item.timestamp
+                ? new Date(item.timestamp).toLocaleString()
+                : "";
+
+            return `
+                <div class="history-item">
+                    <div class="history-number">${history.length - index}</div>
+                    <div class="history-title">${displayTitle(item.title)}</div>
+                    <span class="history-time">${escapeHTML(time)}</span>
+                    <button
+                        type="button"
+                        class="blue-button small-button"
+                        data-action="lyrics"
+                        data-id="${item.songId}"
+                    >Lyrics</button>
+                </div>
+            `;
+        }).join("");
+    }
+
+    function renderRemaining() {
+        elements.remainingCount.textContent =
+            `${getRemainingSongs().length} remaining`;
+    }
+
+    function renderNavigation() {
+        document.querySelector('[data-action="show-songs"]')
+            .classList.toggle("active", currentPage === "songs");
+
+        document.querySelector('[data-action="show-history"]')
+            .classList.toggle("active", currentPage === "history");
+
+        elements.songsPage.classList.toggle("hidden", currentPage !== "songs");
+        elements.historyPage.classList.toggle("hidden", currentPage !== "history");
+    }
+
+    function render() {
+        renderNavigation();
+        renderRemaining();
+        renderSongs();
+        renderRandomResult();
         renderHistory();
     }
-}
 
-function addColoredArtistNames(element, title) {
-    const artistPattern =
-        /(bad bunny|j balvin|ozuna|farruko|arcángel|arcangel)/gi;
+    function chooseRandomSong() {
+        const remaining = getRemainingSongs();
 
-    const colorClasses = {
-        "bad bunny": "artist-bad-bunny",
-        "j balvin": "artist-j-balvin",
-        "ozuna": "artist-ozuna",
-        "farruko": "artist-farruko",
-        "arcángel": "artist-arcangel",
-        "arcangel": "artist-arcangel"
-    };
+        if (remaining.length === 0) {
+            render();
+            return;
+        }
 
-    let lastIndex = 0;
-    let match;
+        const randomIndex = Math.floor(Math.random() * remaining.length);
+        const song = remaining[randomIndex];
 
-    while ((match = artistPattern.exec(title)) !== null) {
-        element.append(
-            document.createTextNode(title.slice(lastIndex, match.index))
+        const pick = {
+            pickId: nextPickId++,
+            songId: song.id,
+            title: song.title,
+            timestamp: Date.now()
+        };
+
+        selectedSongIds.push(song.id);
+        history.push(pick);
+        randomPickId = pick.pickId;
+
+        saveState();
+        render();
+    }
+
+    function skipCurrentPick(pickId) {
+        const pickIndex = history.findIndex(item => item.pickId === pickId);
+
+        if (pickIndex === -1 || pickId !== randomPickId) return;
+
+        const skippedPick = history[pickIndex];
+
+        history.splice(pickIndex, 1);
+        selectedSongIds = selectedSongIds.filter(id => id !== skippedPick.songId);
+        randomPickId = null;
+
+        saveState();
+        render();
+    }
+
+    function openLyrics(songId) {
+        const song = getSong(songId);
+
+        if (!song) {
+            const historicalPick = history.find(item => item.songId === songId);
+            if (!historicalPick) return;
+
+            const query = encodeURIComponent(
+                cleanDisplayTitle(historicalPick.title) + " genius lyrics"
+            );
+
+            window.open(
+                "https://www.google.com/search?q=" + query,
+                "_blank",
+                "noopener,noreferrer"
+            );
+            return;
+        }
+
+        const query = encodeURIComponent(
+            cleanDisplayTitle(song.title) + " genius lyrics"
         );
 
-        const span = document.createElement("span");
-        span.className = colorClasses[match[0].toLowerCase()];
-        span.textContent = match[0];
-        element.append(span);
-
-        lastIndex = match.index + match[0].length;
+        window.open(
+            "https://www.google.com/search?q=" + query,
+            "_blank",
+            "noopener,noreferrer"
+        );
     }
 
-    element.append(document.createTextNode(title.slice(lastIndex)));
-}
+    function changeChecked(songId, amount) {
+        const song = getSong(songId);
+        if (!song) return;
 
-function makeSongCard(song) {
-    const card = document.createElement("article");
-    card.className = "song";
+        song.checked = Math.max(1, song.checked + amount);
 
-    const title = document.createElement("div");
-    title.className = "song-title";
-    addColoredArtistNames(title, song.displayTitle);
-
-    const controls = document.createElement("div");
-    controls.className = "song-controls";
-
-    const label = document.createElement("span");
-    label.className = "checked-label";
-    label.textContent = "Checked";
-
-    const minus = document.createElement("button");
-    minus.type = "button";
-    minus.textContent = "−";
-    minus.setAttribute("aria-label", "Decrease checked count");
-    minus.disabled = song.checked <= 1;
-
-    const count = document.createElement("span");
-    count.className = "count";
-    count.textContent = song.checked;
-
-    const plus = document.createElement("button");
-    plus.type = "button";
-    plus.textContent = "+";
-    plus.setAttribute("aria-label", "Increase checked count");
-
-    minus.addEventListener("click", () => {
-        if (song.checked > 1) {
-            song.checked--;
-            saveSongs();
-            render();
-        }
-    });
-
-    plus.addEventListener("click", () => {
-        song.checked++;
-        saveSongs();
+        saveState();
         render();
-    });
-
-    const lyrics = document.createElement("button");
-    lyrics.type = "button";
-    lyrics.className = "lyrics-button";
-    lyrics.textContent = "Lyrics";
-
-    lyrics.addEventListener("click", () => {
-        const query = song.originalTitle + " genius lyrics";
-        const url = "https://www.google.com/search?q=" +
-            encodeURIComponent(query);
-
-        window.open(url, "_blank", "noopener,noreferrer");
-    });
-
-    controls.append(label, minus, count, plus, lyrics);
-    card.append(title, controls);
-
-    return card;
-}
-
-function render() {
-    songList.replaceChildren();
-
-    if (songs.length === 0) {
-        const empty = document.createElement("p");
-        empty.className = "empty-message";
-        empty.textContent = "Load a TXT file to get started.";
-        songList.append(empty);
-    } else {
-        songs.forEach(song => songList.append(makeSongCard(song)));
     }
 
-    const remaining = songs.filter(
-        song => !selectedSongIds.has(song.id)
-    ).length;
+    async function loadTXTFile() {
+        const file = elements.fileInput.files[0];
 
-    remainingDisplay.textContent = remaining + " remaining";
-    randomButton.disabled = remaining === 0;
-
-    randomResult.replaceChildren();
-
-    if (randomSongId !== null) {
-        const chosenSong = songs.find(song => song.id === randomSongId);
-
-        if (chosenSong) {
-            const card = document.createElement("div");
-            card.className = "random-card";
-            card.append(makeSongCard(chosenSong));
-
-            const actions = document.createElement("div");
-            actions.className = "random-actions";
-
-            const skip = document.createElement("button");
-            skip.type = "button";
-            skip.className = "skip-button";
-            skip.textContent = "Skip";
-
-            skip.addEventListener("click", () => {
-                // Undo the current selection and remove it from history.
-                selectedSongIds.delete(chosenSong.id);
-
-                const lastIndex = history.findLastIndex
-                    ? history.findLastIndex(item =>
-                        item.songId === chosenSong.id
-                    )
-                    : (() => {
-                        for (let i = history.length - 1; i >= 0; i--) {
-                            if (history[i].songId === chosenSong.id) return i;
-                        }
-                        return -1;
-                    })();
-
-                if (lastIndex !== -1) {
-                    history.splice(lastIndex, 1);
-                }
-
-                randomSongId = null;
-                saveSongs();
-                render();
-                renderHistory();
-            });
-
-            const next = document.createElement("button");
-            next.type = "button";
-            next.className = "primary-button";
-            next.textContent = "Choose Next";
-
-            next.addEventListener("click", chooseRandomSong);
-
-            actions.append(skip, next);
-            card.append(actions);
-            randomResult.append(card);
-        }
-    }
-}
-
-function chooseRandomSong() {
-    const availableSongs = songs.filter(
-        song => !selectedSongIds.has(song.id)
-    );
-
-    if (availableSongs.length === 0) {
-        randomSongId = null;
-        saveSongs();
-        render();
-        return;
-    }
-
-    const index = Math.floor(Math.random() * availableSongs.length);
-    const chosenSong = availableSongs[index];
-
-    selectedSongIds.add(chosenSong.id);
-    randomSongId = chosenSong.id;
-
-    history.push({
-        songId: chosenSong.id,
-        title: chosenSong.displayTitle,
-        timestamp: new Date().toISOString()
-    });
-
-    saveSongs();
-    render();
-    renderHistory();
-}
-
-function renderHistory() {
-    historyList.replaceChildren();
-
-    if (history.length === 0) {
-        const empty = document.createElement("p");
-        empty.className = "empty-message";
-        empty.textContent = "No selection history yet.";
-        historyList.append(empty);
-        return;
-    }
-
-    [...history].reverse().forEach((item, index) => {
-        const row = document.createElement("div");
-        row.className = "history-item";
-
-        const number = document.createElement("span");
-        number.className = "history-number";
-        number.textContent = history.length - index + ".";
-
-        const content = document.createElement("div");
-        content.className = "history-title";
-        addColoredArtistNames(content, item.title);
-
-        const date = document.createElement("span");
-        date.className = "history-date";
-
-        const parsedDate = new Date(item.timestamp);
-        date.textContent = Number.isNaN(parsedDate.getTime())
-            ? ""
-            : parsedDate.toLocaleString();
-
-        content.append(date);
-        row.append(number, content);
-        historyList.append(row);
-    });
-}
-
-function showPage(page) {
-    const isHistory = page === "history";
-
-    trackerPage.classList.toggle("hidden", isHistory);
-    historyPage.classList.toggle("hidden", !isHistory);
-
-    trackerNav.classList.toggle("hidden", !isHistory);
-    historyNav.classList.toggle("hidden", isHistory);
-
-    pageTitle.textContent = isHistory ? "History" : "Lyrics Tracker";
-    document.title = isHistory ? "History - Lyrics Tracker" : "Lyrics Tracker";
-
-    const url = new URL(window.location.href);
-    if (isHistory) {
-        url.searchParams.set("page", "history");
-    } else {
-        url.searchParams.delete("page");
-    }
-
-    window.history.replaceState({}, "", url);
-    window.scrollTo(0, 0);
-}
-
-historyNav.addEventListener("click", () => showPage("history"));
-trackerNav.addEventListener("click", () => showPage("tracker"));
-
-fileInput.addEventListener("change", event => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    if (!file.name.toLowerCase().endsWith(".txt")) {
-        fileStatus.textContent = "Please select a TXT file.";
-        fileInput.value = "";
-        return;
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-        const text = String(reader.result ?? "");
-
-        const titles = text
-            .replace(/^\uFEFF/, "")
-            .split(/\r?\n/)
-            .map(line => line.trim())
-            .filter(line => line.length > 0);
-
-        if (titles.length === 0) {
-            fileStatus.textContent = "No songs found in the file.";
-            fileInput.value = "";
+        if (!file) {
+            elements.fileStatus.textContent = "Please select a TXT file first.";
             return;
         }
 
-        songs = titles.map(title => ({
-            id: nextSongId++,
-            originalTitle: title,
-            displayTitle: cleanDisplayTitle(title),
-            checked: 1
-        }));
+        try {
+            const content = await file.text();
 
-        selectedSongIds = new Set();
-        randomSongId = null;
-        history = [];
+            const titles = content
+                .replace(/^\uFEFF/, "")
+                .split(/\r?\n/)
+                .map(line => line.trim())
+                .filter(Boolean);
 
-        saveSongs();
-        render();
-        renderHistory();
+            if (titles.length === 0) {
+                elements.fileStatus.textContent =
+                    "The selected file contains no song titles.";
+                return;
+            }
 
-        fileStatus.textContent =
-            "Loaded " + songs.length + " songs from " + file.name + ".";
+            songs = titles.map(title => ({
+                id: nextSongId++,
+                title,
+                checked: 1
+            }));
 
-        fileInput.value = "";
-        showPage("tracker");
-    };
+            selectedSongIds = [];
+            randomPickId = null;
+            history = [];
+            nextPickId = 1;
+            currentPage = "songs";
 
-    reader.onerror = () => {
-        fileStatus.textContent = "Unable to read the file.";
-        fileInput.value = "";
-    };
+            saveState();
+            render();
 
-    reader.readAsText(file);
-});
+            elements.fileStatus.textContent =
+                `Loaded ${songs.length} songs from ${file.name}.`;
+        } catch (error) {
+            elements.fileStatus.textContent =
+                "Unable to read the selected file.";
+        }
+    }
 
-loadSavedData();
+    document.addEventListener("click", event => {
+        const button = event.target.closest("button[data-action]");
+        if (!button) return;
 
-if (new URLSearchParams(window.location.search).get("page") === "history") {
-    showPage("history");
-}
+        const action = button.dataset.action;
+        const id = Number(button.dataset.id);
+
+        switch (action) {
+            case "choose-random":
+                chooseRandomSong();
+                break;
+
+            case "skip":
+                skipCurrentPick(Number(button.dataset.pickId));
+                break;
+
+            case "lyrics":
+                openLyrics(id);
+                break;
+
+            case "increase":
+                changeChecked(id, 1);
+                break;
+
+            case "decrease":
+                changeChecked(id, -1);
+                break;
+
+            case "show-songs":
+                currentPage = "songs";
+                renderNavigation();
+                break;
+
+            case "show-history":
+                currentPage = "history";
+                renderNavigation();
+                break;
+
+            case "load-file":
+                loadTXTFile();
+                break;
+        }
+    });
+
+    loadState();
+    render();
+})();
 </script>
 
 </body>
