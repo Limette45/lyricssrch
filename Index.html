@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lyrics Tracker</title>
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 20px;
+    color: #222;
+    background: #f7f7f7;
+}
+
+h1 {
+    font-size: 26px;
+    margin-bottom: 24px;
+}
+
+h2 {
+    font-size: 20px;
+    margin-bottom: 14px;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px 13px;
+    background: white;
+    color: #222;
+}
+
+button:hover {
+    background: #eee;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+
+.song-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.song {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 14px;
+}
+
+.song-title {
+    font-weight: bold;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    margin-bottom: 12px;
+}
+
+.song-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.checked-label {
+    color: #555;
+    font-size: 14px;
+}
+
+.count {
+    min-width: 24px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.lyrics-button {
+    margin-left: auto;
+    background: #222;
+    color: white;
+    border-color: #222;
+}
+
+.lyrics-button:hover {
+    background: #444;
+}
+
+#random-section {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 18px;
+    margin-top: 28px;
+}
+
+.remaining {
+    color: #555;
+    margin: 0 0 14px;
+}
+
+#random-button {
+    width: 100%;
+    background: #222;
+    color: white;
+    border-color: #222;
+}
+
+#random-button:hover {
+    background: #444;
+}
+
+#random-result {
+    margin-top: 16px;
+}
+
+#random-result:empty {
+    display: none;
+}
+
+#upload-section {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid #ccc;
+}
+
+#file-input {
+    display: block;
+    width: 100%;
+    margin: 12px 0;
+}
+
+#file-status {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.empty-message {
+    color: #777;
+    padding: 20px 0;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 14px;
+    }
+
+    .song {
+        padding: 12px;
+    }
+
+    .song-controls {
+        gap: 7px;
+    }
+
+    .lyrics-button {
+        margin-left: auto;
+    }
+}
+</style>
+</head>
+<body>
+
+<h1>Lyrics Tracker</h1>
+
+<section>
+    <h2>Song List</h2>
+    <div id="song-list" class="song-list">
+        <p class="empty-message">Load a TXT file to get started.</p>
+    </div>
+</section>
+
+<section id="random-section">
+    <h2>Random Choose</h2>
+    <p class="remaining" id="remaining">0 remaining</p>
+    <button id="random-button" disabled>Choose Random Song</button>
+    <div id="random-result"></div>
+</section>
+
+<section id="upload-section">
+    <h2>Load TXT File</h2>
+    <p>Select a text file containing one song per line.</p>
+    <input type="file" id="file-input" accept=".txt,text/plain">
+    <p id="file-status">No file loaded.</p>
+</section>
+
+<script>
+const STORAGE_KEY = "lyricsTrackerInventory_v1";
+
+let songs = [];
+let selectedSongIds = new Set();
+let randomSongId = null;
+let nextSongId = 1;
+
+const songList = document.getElementById("song-list");
+const remainingDisplay = document.getElementById("remaining");
+const randomButton = document.getElementById("random-button");
+const randomResult = document.getElementById("random-result");
+const fileInput = document.getElementById("file-input");
+const fileStatus = document.getElementById("file-status");
+
+function cleanDisplayTitle(title) {
+    return title
+        .replace(/Official Music Video/gi, "")
+        .replace(/Official Video/gi, "")
+        .replace(/Video Oficial/gi, "")
+        .replace(/Audio Oficial/gi, "")
+        .replace(/[ \t]+/g, " ")
+        .replace(/[ \t]+([)\]])/g, "$1")
+        .replace(/([(])[ \t]+/g, "$1")
+        .trim();
+}
+
+function saveSongs() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        songs,
+        selectedSongIds: [...selectedSongIds],
+        randomSongId,
+        nextSongId
+    }));
+}
+
+function loadSavedData() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if (!saved) {
+        render();
+        return;
+    }
+
+    try {
+        const data = JSON.parse(saved);
+
+        songs = Array.isArray(data.songs) ? data.songs : [];
+        selectedSongIds = new Set(data.selectedSongIds || []);
+        randomSongId = data.randomSongId ?? null;
+        nextSongId = data.nextSongId || 1;
+
+        render();
+    } catch {
+        songs = [];
+        selectedSongIds = new Set();
+        randomSongId = null;
+        nextSongId = 1;
+        render();
+    }
+}
+
+function renderSong(song, showInRandom = false) {
+    const card = document.createElement("div");
+    card.className = "song";
+
+    const title = document.createElement("div");
+    title.className = "song-title";
+    title.textContent = song.displayTitle;
+
+    const controls = document.createElement("div");
+    controls.className = "song-controls";
+
+    const label = document.createElement("span");
+    label.className = "checked-label";
+    label.textContent = "Checked";
+
+    const minus = document.createElement("button");
+    minus.type = "button";
+    minus.textContent = "−";
+    minus.setAttribute("aria-label", "Decrease checked count");
+    minus.disabled = song.checked <= 1;
+
+    const count = document.createElement("span");
+    count.className = "count";
+    count.textContent = song.checked;
+
+    const plus = document.createElement("button");
+    plus.type = "button";
+    plus.textContent = "+";
+    plus.setAttribute("aria-label", "Increase checked count");
+
+    minus.addEventListener("click", () => {
+        if (song.checked > 1) {
+            song.checked--;
+            saveSongs();
+            render();
+        }
+    });
+
+    plus.addEventListener("click", () => {
+        song.checked++;
+        saveSongs();
+        render();
+    });
+
+    const lyrics = document.createElement("button");
+    lyrics.type = "button";
+    lyrics.className = "lyrics-button";
+    lyrics.textContent = "Lyrics";
+
+    lyrics.addEventListener("click", () => {
+        const query = song.originalTitle + " genius lyrics";
+        const url = "https://www.google.com/search?q=" +
+            encodeURIComponent(query);
+
+        window.open(url, "_blank", "noopener,noreferrer");
+    });
+
+    controls.append(label, minus, count, plus, lyrics);
+    card.append(title, controls);
+
+    return card;
+}
+
+function render() {
+    songList.replaceChildren();
+
+    if (songs.length === 0) {
+        const empty = document.createElement("p");
+        empty.className = "empty-message";
+        empty.textContent = "Load a TXT file to get started.";
+        songList.append(empty);
+    } else {
+        songs.forEach(song => {
+            songList.append(renderSong(song));
+        });
+    }
+
+    const remaining = songs.filter(
+        song => !selectedSongIds.has(song.id)
+    ).length;
+
+    remainingDisplay.textContent = remaining + " remaining";
+    randomButton.disabled = remaining === 0;
+
+    randomResult.replaceChildren();
+
+    if (randomSongId !== null) {
+        const chosenSong = songs.find(
+            song => song.id === randomSongId
+        );
+
+        if (chosenSong) {
+            randomResult.append(renderSong(chosenSong, true));
+        }
+    }
+}
+
+function chooseRandomSong() {
+    const availableSongs = songs.filter(
+        song => !selectedSongIds.has(song.id)
+    );
+
+    if (availableSongs.length === 0) {
+        randomSongId = null;
+        saveSongs();
+        render();
+        return;
+    }
+
+    const index = Math.floor(Math.random() * availableSongs.length);
+    const chosenSong = availableSongs[index];
+
+    selectedSongIds.add(chosenSong.id);
+    randomSongId = chosenSong.id;
+
+    saveSongs();
+    render();
+}
+
+randomButton.addEventListener("click", chooseRandomSong);
+
+fileInput.addEventListener("change", event => {
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    if (!file.name.toLowerCase().endsWith(".txt")) {
+        fileStatus.textContent = "Please select a TXT file.";
+        fileInput.value = "";
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+        const text = String(reader.result ?? "");
+
+        const titles = text
+            .replace(/^\uFEFF/, "")
+            .split(/\r?\n/)
+            .map(line => line.trim())
+            .filter(line => line.length > 0);
+
+        if (titles.length === 0) {
+            fileStatus.textContent = "No songs found in the file.";
+            fileInput.value = "";
+            return;
+        }
+
+        songs = titles.map(title => ({
+            id: nextSongId++,
+            originalTitle: title,
+            displayTitle: cleanDisplayTitle(title),
+            checked: 1
+        }));
+
+        selectedSongIds = new Set();
+        randomSongId = null;
+
+        saveSongs();
+        render();
+
+        fileStatus.textContent =
+            "Loaded " + songs.length + " songs from " + file.name + ".";
+
+        fileInput.value = "";
+    };
+
+    reader.onerror = () => {
+        fileStatus.textContent = "Unable to read the file.";
+        fileInput.value = "";
+    };
+
+    reader.readAsText(file);
+});
+
+loadSavedData();
+</script>
+
+</body>
+</html>
