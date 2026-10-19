@@ -216,7 +216,7 @@ button:active {
 .history-actions {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 8px;
     width: 100%;
 }
@@ -314,6 +314,14 @@ input[type="file"] {
                 <button class="primary" data-action="choose-random">Choose Random</button>
                 <button class="skip" data-action="skip-current">Skip</button>
             </div>
+            <div class="song-actions" id="random-song-actions" style="display:none;margin-top:12px">
+                <div class="counter">
+                    <button data-action="decrement-random" aria-label="Decrease count">−</button>
+                    <span class="counter-value" id="random-checked-count">1</span>
+                    <button data-action="increment-random" aria-label="Increase count">+</button>
+                </div>
+                <button class="lyrics-button" data-action="lyrics-random">Lyrics Search</button>
+            </div>
             <div class="count" id="remaining-count" style="text-align:center;margin-top:12px">
                 0 songs remaining
             </div>
@@ -368,6 +376,8 @@ const elements = {
     historyList: document.getElementById("history-list"),
     historyCount: document.getElementById("history-count"),
     randomResult: document.getElementById("random-result"),
+    randomSongActions: document.getElementById("random-song-actions"),
+    randomCheckedCount: document.getElementById("random-checked-count"),
     remainingCount: document.getElementById("remaining-count"),
     txtFile: document.getElementById("txt-file"),
     uploadStatus: document.getElementById("upload-status")
@@ -528,8 +538,11 @@ function renderRandomResult() {
     if (!song) {
         elements.randomResult.textContent =
             songs.length ? "Choose a song" : "Choose a song to get started";
+        elements.randomSongActions.style.display = "none";
     } else {
         elements.randomResult.innerHTML = displayTitle(song.title);
+        elements.randomSongActions.style.display = "flex";
+        elements.randomCheckedCount.textContent = song.checked;
     }
     renderRemainingCount();
 }
@@ -546,12 +559,18 @@ function renderHistory() {
     elements.historyList.innerHTML = [...history].reverse().map(item => {
         const song = songs.find(entry => entry.id === item.songId);
         const title = song ? song.title : item.title;
+        const checked = song ? song.checked : 0;
 
         return `
             <div class="history-item">
                 <div class="history-name">${displayTitle(title)}</div>
                 <div class="history-actions">
-                    <button class="lyrics-button" data-action="lyrics" data-id="${item.songId}">Lyrics</button>
+                    <div class="counter">
+                        <button data-action="decrement" data-id="${item.songId}" aria-label="Decrease count">−</button>
+                        <span class="counter-value">${checked}</span>
+                        <button data-action="increment" data-id="${item.songId}" aria-label="Increase count">+</button>
+                    </div>
+                    <button class="lyrics-button" data-action="lyrics" data-id="${item.songId}">Lyrics Search</button>
                     <button class="skip" data-action="skip" data-id="${item.songId}">Skip</button>
                 </div>
             </div>
@@ -612,7 +631,7 @@ function changeCheckedCount(id, change) {
     if (!song) return;
 
     song.checked = Math.max(0, (Number(song.checked) || 0) + change);
-    renderSongs();
+    renderAll();
     saveState();
 }
 
@@ -715,15 +734,27 @@ document.addEventListener("click", event => {
             break;
 
         case "increment":
-            changeCheckedCount(id, 1);
+        case "increment-random":
+            changeCheckedCount(
+                action === "increment-random" ? currentRandomId : id,
+                1
+            );
             break;
 
         case "decrement":
-            changeCheckedCount(id, -1);
+        case "decrement-random":
+            changeCheckedCount(
+                action === "decrement-random" ? currentRandomId : id,
+                -1
+            );
             break;
 
         case "lyrics":
             openLyrics(id);
+            break;
+
+        case "lyrics-random":
+            openLyrics(currentRandomId);
             break;
 
         case "skip":
@@ -741,4 +772,4 @@ loadState();
 renderAll();
 </script>
 </body>
-</html> 
+</html>
