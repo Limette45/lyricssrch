@@ -2,9 +2,22 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lyrics Tracker</title>
 <style>
+:root {
+    --bg: #f2f7fa;
+    --surface: #ffffff;
+    --surface-alt: #eaf4f9;
+    --text: #263746;
+    --muted: #718391;
+    --border: #d8e7ef;
+    --blue: #8dcfe8;
+    --blue-dark: #347d9d;
+    --blue-hover: #d9eff9;
+    --danger: #d87979;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -13,42 +26,134 @@ body {
     font-family: Arial, sans-serif;
     max-width: 850px;
     margin: 0 auto;
-    padding: 20px;
-    color: #222;
-    background: #f7f7f7;
+    padding: 22px;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.5;
 }
 
 h1 {
-    font-size: 26px;
-    margin-bottom: 24px;
+    font-size: 27px;
+    margin: 0;
 }
 
 h2 {
-    font-size: 20px;
-    margin-bottom: 14px;
+    font-size: 19px;
+    margin: 0 0 14px;
 }
 
-button,
-input {
+p {
+    margin-top: 8px;
+}
+
+button, input {
     font: inherit;
 }
 
 button {
     cursor: pointer;
-    border: 1px solid #ccc;
-    border-radius: 6px;
     padding: 8px 13px;
-    background: white;
-    color: #222;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    background: var(--surface);
+    transition: background 0.15s, border-color 0.15s;
 }
 
-button:hover {
-    background: #eee;
+button:hover:not(:disabled) {
+    background: var(--blue-hover);
+    border-color: var(--blue);
 }
 
 button:disabled {
     cursor: not-allowed;
-    opacity: 0.4;
+    opacity: 0.45;
+}
+
+.primary-button {
+    background: #bce6f6;
+    border-color: #a3d9ee;
+    color: #244b60;
+    font-weight: 600;
+}
+
+.primary-button:hover:not(:disabled) {
+    background: #a6ddf1;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+section {
+    margin-bottom: 28px;
+}
+
+#random-section {
+    padding: 18px;
+    background: #e5f3fa;
+    border: 1px solid #cce5f1;
+    border-radius: 12px;
+}
+
+#random-section h2 {
+    margin-bottom: 8px;
+}
+
+.remaining {
+    margin: 0 0 14px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+#random-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+}
+
+#random-result {
+    margin-top: 14px;
+}
+
+#random-result:empty {
+    display: none;
+}
+
+.random-card {
+    background: var(--surface);
+    border: 1px solid #c9e2ef;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.random-card .song-title {
+    font-size: 18px;
+}
+
+.random-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.random-actions button {
+    flex: 1;
+}
+
+.skip-button {
+    color: #8d5353;
+    border-color: #ebd1d1;
 }
 
 .song-list {
@@ -58,17 +163,16 @@ button:disabled {
 }
 
 .song {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
     padding: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
 }
 
 .song-title {
-    font-weight: bold;
-    line-height: 1.5;
+    font-weight: 600;
     overflow-wrap: anywhere;
-    margin-bottom: 12px;
+    margin-bottom: 11px;
 }
 
 .song-controls {
@@ -79,80 +183,114 @@ button:disabled {
 }
 
 .checked-label {
-    color: #555;
-    font-size: 14px;
+    color: var(--muted);
+    font-size: 13px;
 }
 
 .count {
     min-width: 24px;
     text-align: center;
-    font-weight: bold;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
 }
 
 .lyrics-button {
     margin-left: auto;
-    background: #222;
-    color: white;
-    border-color: #222;
+    background: #e0f2fa;
+    border-color: #c6e7f5;
+    color: #286b89;
 }
 
-.lyrics-button:hover {
-    background: #444;
+.lyrics-button:hover:not(:disabled) {
+    background: #ccebf8;
 }
 
-#random-section {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 18px;
-    margin-top: 28px;
+/* Artist colors */
+.artist-bad-bunny {
+    color: #d84444;
 }
 
-.remaining {
-    color: #555;
-    margin: 0 0 14px;
+.artist-j-balvin {
+    color: #29945b;
 }
 
-#random-button {
-    width: 100%;
-    background: #222;
-    color: white;
-    border-color: #222;
+.artist-ozuna {
+    color: #858b94;
 }
 
-#random-button:hover {
-    background: #444;
+.artist-farruko {
+    color: #28a5d2;
 }
 
-#random-result {
-    margin-top: 16px;
-}
-
-#random-result:empty {
-    display: none;
+.artist-arcangel {
+    color: #c49a13;
 }
 
 #upload-section {
-    margin-top: 60px;
+    margin-top: 55px;
     padding-top: 24px;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid var(--border);
 }
 
 #file-input {
     display: block;
     width: 100%;
-    margin: 12px 0;
+    margin: 14px 0;
+    padding: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
 }
 
-#file-status {
+#file-status, .subtext {
+    color: var(--muted);
     font-size: 14px;
-    color: #555;
-    line-height: 1.5;
+    overflow-wrap: anywhere;
 }
 
 .empty-message {
-    color: #777;
-    padding: 20px 0;
+    color: var(--muted);
+    padding: 16px 0;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.history-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.history-number {
+    color: var(--blue-dark);
+    font-weight: 700;
+    min-width: 25px;
+}
+
+.history-title {
+    flex: 1;
+    overflow-wrap: anywhere;
+    font-weight: 600;
+}
+
+.history-date {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.hidden {
+    display: none !important;
 }
 
 @media (max-width: 480px) {
@@ -160,44 +298,66 @@ button:disabled {
         padding: 14px;
     }
 
+    .page-header {
+        align-items: flex-start;
+    }
+
     .song {
         padding: 12px;
     }
 
-    .song-controls {
-        gap: 7px;
-    }
-
-    .lyrics-button {
-        margin-left: auto;
+    .random-card .song-title {
+        font-size: 16px;
     }
 }
 </style>
 </head>
 <body>
 
-<h1>Lyrics Tracker</h1>
-
-<section>
-    <h2>Song List</h2>
-    <div id="song-list" class="song-list">
-        <p class="empty-message">Load a TXT file to get started.</p>
+<div class="page-header">
+    <h1 id="page-title">Lyrics Tracker</h1>
+    <div class="header-actions">
+        <button id="tracker-nav" class="hidden">Tracker</button>
+        <button id="history-nav">History</button>
     </div>
-</section>
+</div>
 
-<section id="random-section">
-    <h2>Random Choose</h2>
-    <p class="remaining" id="remaining">0 remaining</p>
-    <button id="random-button" disabled>Choose Random Song</button>
-    <div id="random-result"></div>
-</section>
+<main id="tracker-page">
 
-<section id="upload-section">
-    <h2>Load TXT File</h2>
-    <p>Select a text file containing one song per line.</p>
-    <input type="file" id="file-input" accept=".txt,text/plain">
-    <p id="file-status">No file loaded.</p>
-</section>
+    <section id="random-section">
+        <h2>Random Choose</h2>
+        <p id="remaining" class="remaining">0 remaining</p>
+        <button id="random-button" class="primary-button" disabled>
+            Choose Random Song
+        </button>
+        <div id="random-result"></div>
+    </section>
+
+    <section>
+        <h2>Song List</h2>
+        <div id="song-list" class="song-list">
+            <p class="empty-message">Load a TXT file to get started.</p>
+        </div>
+    </section>
+
+    <section id="upload-section">
+        <h2>Load TXT File</h2>
+        <p class="subtext">Select a text file containing one song per line.</p>
+        <input type="file" id="file-input" accept=".txt,text/plain">
+        <p id="file-status">No file loaded.</p>
+    </section>
+
+</main>
+
+<main id="history-page" class="hidden">
+    <section>
+        <h2>Random Selection History</h2>
+        <p class="subtext">
+            Songs are recorded when selected. Skipped songs are not included.
+        </p>
+        <div id="history-list" class="history-list"></div>
+    </section>
+</main>
 
 <script>
 const STORAGE_KEY = "lyricsTrackerInventory_v1";
@@ -205,6 +365,7 @@ const STORAGE_KEY = "lyricsTrackerInventory_v1";
 let songs = [];
 let selectedSongIds = new Set();
 let randomSongId = null;
+let history = [];
 let nextSongId = 1;
 
 const songList = document.getElementById("song-list");
@@ -213,61 +374,118 @@ const randomButton = document.getElementById("random-button");
 const randomResult = document.getElementById("random-result");
 const fileInput = document.getElementById("file-input");
 const fileStatus = document.getElementById("file-status");
+const historyList = document.getElementById("history-list");
+
+const trackerPage = document.getElementById("tracker-page");
+const historyPage = document.getElementById("history-page");
+const pageTitle = document.getElementById("page-title");
+const trackerNav = document.getElementById("tracker-nav");
+const historyNav = document.getElementById("history-nav");
 
 function cleanDisplayTitle(title) {
     return title
-        .replace(/Official Music Video/gi, "")
-        .replace(/Official Video/gi, "")
-        .replace(/Video Oficial/gi, "")
-        .replace(/Audio Oficial/gi, "")
-        .replace(/[ \t]+/g, " ")
-        .replace(/[ \t]+([)\]])/g, "$1")
-        .replace(/([(])[ \t]+/g, "$1")
+        // Remove bracketed content, including the brackets.
+        .replace(/\([^()]*\)|\[[^\[\]]*\]|\{[^{}]*\}|（[^（）]*）|［[^［］]*］|｛[^｛｝]*｝/g, " ")
+        // Remove official video/audio labels, ignoring letter case.
+        .replace(/\bofficial\s+music\s+video\b/gi, "")
+        .replace(/\bofficial\s+video\b/gi, "")
+        .replace(/\bvideo\s+oficial\b/gi, "")
+        .replace(/\baudio\s+oficial\b/gi, "")
+        // Remove repeated spaces left behind.
+        .replace(/\s+/g, " ")
         .trim();
 }
 
 function saveSongs() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        songs,
-        selectedSongIds: [...selectedSongIds],
-        randomSongId,
-        nextSongId
-    }));
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            songs,
+            selectedSongIds: [...selectedSongIds],
+            randomSongId,
+            history,
+            nextSongId
+        }));
+    } catch (error) {
+        fileStatus.textContent =
+            "Unable to save data. Browser storage may be full or unavailable.";
+    }
 }
 
 function loadSavedData() {
-    const saved = localStorage.getItem(STORAGE_KEY);
-
-    if (!saved) {
-        render();
-        return;
-    }
-
     try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+
+        if (!saved) {
+            render();
+            renderHistory();
+            return;
+        }
+
         const data = JSON.parse(saved);
 
         songs = Array.isArray(data.songs) ? data.songs : [];
         selectedSongIds = new Set(data.selectedSongIds || []);
         randomSongId = data.randomSongId ?? null;
+        history = Array.isArray(data.history) ? data.history : [];
         nextSongId = data.nextSongId || 1;
 
         render();
-    } catch {
+        renderHistory();
+
+        if (songs.length > 0) {
+            fileStatus.textContent =
+                "Restored " + songs.length + " saved songs.";
+        }
+    } catch (error) {
         songs = [];
         selectedSongIds = new Set();
         randomSongId = null;
+        history = [];
         nextSongId = 1;
         render();
+        renderHistory();
     }
 }
 
-function renderSong(song, showInRandom = false) {
-    const card = document.createElement("div");
+function addColoredArtistNames(element, title) {
+    const artistPattern =
+        /(bad bunny|j balvin|ozuna|farruko|arcángel|arcangel)/gi;
+
+    const colorClasses = {
+        "bad bunny": "artist-bad-bunny",
+        "j balvin": "artist-j-balvin",
+        "ozuna": "artist-ozuna",
+        "farruko": "artist-farruko",
+        "arcángel": "artist-arcangel",
+        "arcangel": "artist-arcangel"
+    };
+
+    let lastIndex = 0;
+    let match;
+
+    while ((match = artistPattern.exec(title)) !== null) {
+        element.append(
+            document.createTextNode(title.slice(lastIndex, match.index))
+        );
+
+        const span = document.createElement("span");
+        span.className = colorClasses[match[0].toLowerCase()];
+        span.textContent = match[0];
+        element.append(span);
+
+        lastIndex = match.index + match[0].length;
+    }
+
+    element.append(document.createTextNode(title.slice(lastIndex)));
+}
+
+function makeSongCard(song) {
+    const card = document.createElement("article");
     card.className = "song";
 
     const title = document.createElement("div");
     title.className = "song-title";
-    title.textContent = song.displayTitle;
+    addColoredArtistNames(title, song.displayTitle);
 
     const controls = document.createElement("div");
     controls.className = "song-controls";
@@ -333,9 +551,7 @@ function render() {
         empty.textContent = "Load a TXT file to get started.";
         songList.append(empty);
     } else {
-        songs.forEach(song => {
-            songList.append(renderSong(song));
-        });
+        songs.forEach(song => songList.append(makeSongCard(song)));
     }
 
     const remaining = songs.filter(
@@ -348,12 +564,56 @@ function render() {
     randomResult.replaceChildren();
 
     if (randomSongId !== null) {
-        const chosenSong = songs.find(
-            song => song.id === randomSongId
-        );
+        const chosenSong = songs.find(song => song.id === randomSongId);
 
         if (chosenSong) {
-            randomResult.append(renderSong(chosenSong, true));
+            const card = document.createElement("div");
+            card.className = "random-card";
+            card.append(makeSongCard(chosenSong));
+
+            const actions = document.createElement("div");
+            actions.className = "random-actions";
+
+            const skip = document.createElement("button");
+            skip.type = "button";
+            skip.className = "skip-button";
+            skip.textContent = "Skip";
+
+            skip.addEventListener("click", () => {
+                // Undo the current selection and remove it from history.
+                selectedSongIds.delete(chosenSong.id);
+
+                const lastIndex = history.findLastIndex
+                    ? history.findLastIndex(item =>
+                        item.songId === chosenSong.id
+                    )
+                    : (() => {
+                        for (let i = history.length - 1; i >= 0; i--) {
+                            if (history[i].songId === chosenSong.id) return i;
+                        }
+                        return -1;
+                    })();
+
+                if (lastIndex !== -1) {
+                    history.splice(lastIndex, 1);
+                }
+
+                randomSongId = null;
+                saveSongs();
+                render();
+                renderHistory();
+            });
+
+            const next = document.createElement("button");
+            next.type = "button";
+            next.className = "primary-button";
+            next.textContent = "Choose Next";
+
+            next.addEventListener("click", chooseRandomSong);
+
+            actions.append(skip, next);
+            card.append(actions);
+            randomResult.append(card);
         }
     }
 }
@@ -376,15 +636,82 @@ function chooseRandomSong() {
     selectedSongIds.add(chosenSong.id);
     randomSongId = chosenSong.id;
 
+    history.push({
+        songId: chosenSong.id,
+        title: chosenSong.displayTitle,
+        timestamp: new Date().toISOString()
+    });
+
     saveSongs();
     render();
+    renderHistory();
 }
 
-randomButton.addEventListener("click", chooseRandomSong);
+function renderHistory() {
+    historyList.replaceChildren();
+
+    if (history.length === 0) {
+        const empty = document.createElement("p");
+        empty.className = "empty-message";
+        empty.textContent = "No selection history yet.";
+        historyList.append(empty);
+        return;
+    }
+
+    [...history].reverse().forEach((item, index) => {
+        const row = document.createElement("div");
+        row.className = "history-item";
+
+        const number = document.createElement("span");
+        number.className = "history-number";
+        number.textContent = history.length - index + ".";
+
+        const content = document.createElement("div");
+        content.className = "history-title";
+        addColoredArtistNames(content, item.title);
+
+        const date = document.createElement("span");
+        date.className = "history-date";
+
+        const parsedDate = new Date(item.timestamp);
+        date.textContent = Number.isNaN(parsedDate.getTime())
+            ? ""
+            : parsedDate.toLocaleString();
+
+        content.append(date);
+        row.append(number, content);
+        historyList.append(row);
+    });
+}
+
+function showPage(page) {
+    const isHistory = page === "history";
+
+    trackerPage.classList.toggle("hidden", isHistory);
+    historyPage.classList.toggle("hidden", !isHistory);
+
+    trackerNav.classList.toggle("hidden", !isHistory);
+    historyNav.classList.toggle("hidden", isHistory);
+
+    pageTitle.textContent = isHistory ? "History" : "Lyrics Tracker";
+    document.title = isHistory ? "History - Lyrics Tracker" : "Lyrics Tracker";
+
+    const url = new URL(window.location.href);
+    if (isHistory) {
+        url.searchParams.set("page", "history");
+    } else {
+        url.searchParams.delete("page");
+    }
+
+    window.history.replaceState({}, "", url);
+    window.scrollTo(0, 0);
+}
+
+historyNav.addEventListener("click", () => showPage("history"));
+trackerNav.addEventListener("click", () => showPage("tracker"));
 
 fileInput.addEventListener("change", event => {
     const file = event.target.files[0];
-
     if (!file) return;
 
     if (!file.name.toLowerCase().endsWith(".txt")) {
@@ -419,14 +746,17 @@ fileInput.addEventListener("change", event => {
 
         selectedSongIds = new Set();
         randomSongId = null;
+        history = [];
 
         saveSongs();
         render();
+        renderHistory();
 
         fileStatus.textContent =
             "Loaded " + songs.length + " songs from " + file.name + ".";
 
         fileInput.value = "";
+        showPage("tracker");
     };
 
     reader.onerror = () => {
@@ -438,6 +768,10 @@ fileInput.addEventListener("change", event => {
 });
 
 loadSavedData();
+
+if (new URLSearchParams(window.location.search).get("page") === "history") {
+    showPage("history");
+}
 </script>
 
 </body>
