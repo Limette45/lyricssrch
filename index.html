@@ -617,7 +617,7 @@ function changeCheckedCount(id, change) {
     const song = songs.find(item => item.id === id);
     if (!song) return;
 
-    song.checked = Math.max(1, (Number(song.checked) || 1) + change);
+    song.checked = Math.max(0, (Number(song.checked) || 0) + change);
     renderSongs();
     saveState();
 }
